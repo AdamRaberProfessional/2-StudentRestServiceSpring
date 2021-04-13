@@ -22,7 +22,7 @@ public class StudentEditController {
                           @RequestParam(value = "attributeChange", defaultValue = "") String attributeChange,
                           @RequestParam(value = "attributeVal", defaultValue = "") String attributeVal) throws IOException, ParseException {
         
-                String file = "./src/main/java/com/example/springrestservice/StudentDatabase.json";
+                String file = "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
                 FileReader reader = new FileReader(file);
                 JSONParser jsonParser = new JSONParser();
                 JSONObject  studentDb = (JSONObject) jsonParser.parse(reader);
@@ -34,17 +34,19 @@ public class StudentEditController {
                 }
                 
                 if(!id.equals("") && !attributeChange.equals("") && !attributeVal.equals("")){
-                        JSONObject chosJsonObj = jsonArray.get(Integer.parseInt(id));
-                        chosJsonObj.put(attributeChange, attributeVal);
+                        JSONObject chosenStudent = jsonArray.get(Integer.parseInt(id));
+                        chosenStudent.put(attributeChange, attributeVal);
+                        if (attributeChange.equals("grade") && Integer.parseInt(attributeVal) <15){
+                                chosenStudent.put("major", null);
+                        }
 
                         JSONObject finalJsonObj = new JSONObject();
 
                         for(int i=0; i<jsonArray.size(); i++){
                                 finalJsonObj.put(Integer.toString(i), jsonArray.get(i));
                         }
-                        // System.out.println(jsonArray.toString());
-
-                        Files.write(Paths.get(file), finalJsonObj.toJSONString().getBytes());
+                        String finalJsonStr = finalJsonObj.toJSONString().replace("},", "},\r");
+                        Files.write(Paths.get(file), finalJsonStr.getBytes());
                 }
 	}
    
