@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,18 +23,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StudentCreationController {
 
+    @CrossOrigin
 	@PostMapping("/createstudent")
 	public void createstudent(@RequestParam(value = "fname", defaultValue = "None") String fname,
                               @RequestParam(value = "lname", defaultValue = "None") String lname,
                               @RequestParam(value = "grade", defaultValue = "None") String grade,
                               @RequestParam(value = "major", defaultValue = "None") String major) throws IOException, ParseException  { 
-        
+        System.out.println("Request made");
+        System.out.println(fname+lname+grade);
 
         if(!fname.equals("None") && !lname.equals("None") && !grade.equals("None")){
             String file = "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
             FileReader reader = new FileReader(file);
             JSONParser jsonParser = new JSONParser();
             JSONObject  studentDb = (JSONObject) jsonParser.parse(reader);
+            reader.close();
             ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
 
             Iterator it =  studentDb.keySet().iterator();
@@ -69,6 +73,7 @@ public class StudentCreationController {
 
             String finalJsonStr = finalJsonObj.toJSONString().replace("},", "},\r");
             Files.write(Paths.get(file), finalJsonStr.getBytes());
+            
         }
 
 

@@ -10,6 +10,7 @@ import java.util.Iterator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StudentEditController {
 
+        @CrossOrigin
 	@PostMapping("/editstudent")
 	public void student(@RequestParam(value = "id", defaultValue = "") String id,
                           @RequestParam(value = "attributeChange", defaultValue = "") String attributeChange,
@@ -26,6 +28,7 @@ public class StudentEditController {
                 FileReader reader = new FileReader(file);
                 JSONParser jsonParser = new JSONParser();
                 JSONObject  studentDb = (JSONObject) jsonParser.parse(reader);
+                reader.close();
                 ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
                 Iterator it =  studentDb.keySet().iterator();
                 while (it.hasNext()){
