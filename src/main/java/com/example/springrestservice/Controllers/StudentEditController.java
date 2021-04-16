@@ -30,10 +30,8 @@ public class StudentEditController {
                 JSONObject  studentDb = (JSONObject) jsonParser.parse(reader);
                 reader.close();
                 ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
-                Iterator it =  studentDb.keySet().iterator();
-                while (it.hasNext()){
-                        String key = (String) it.next();
-                        jsonArray.add((JSONObject) studentDb.get(key));
+                for(int i=0; i<studentDb.size(); i++){
+                        jsonArray.add((JSONObject) studentDb.get(Integer.toString(i)));
                 }
                 
                 if(!id.equals("") && !attributeChange.equals("") && !attributeVal.equals("")){

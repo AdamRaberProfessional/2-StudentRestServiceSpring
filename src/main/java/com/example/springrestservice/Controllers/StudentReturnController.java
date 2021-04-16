@@ -23,7 +23,6 @@ public class StudentReturnController {
         JSONParser jsonParser = new JSONParser();
         JSONObject studentDb = (JSONObject) jsonParser.parse(reader);
         reader.close();
-        System.out.println(id);
         if(! id.equals("None") && ! id.equals("all")){
             try{
                 JSONObject singleStudent = (JSONObject) jsonParser.parse(studentDb.get(id).toString());
@@ -39,10 +38,6 @@ public class StudentReturnController {
         }else{
             return "{'content': 'Error parsing string'}";
         }
-            
-       
-
-		
 	}
    
 }

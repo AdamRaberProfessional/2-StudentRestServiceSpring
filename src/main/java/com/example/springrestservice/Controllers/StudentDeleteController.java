@@ -31,16 +31,9 @@ public class StudentDeleteController {
             JSONObject  studentDb = (JSONObject) jsonParser.parse(reader);
             reader.close();
             ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
-            Iterator it =  studentDb.keySet().iterator();
-            for(){
-                
+            for(int i=0; i<studentDb.size(); i++){
+                jsonArray.add((JSONObject) studentDb.get(Integer.toString(i)));
             }
-            while (it.hasNext()){
-                    String key = (String) it.next();
-                    jsonArray.add((JSONObject) studentDb.get(key));
-            }
-            System.out.println("first");
-            System.out.println(jsonArray.toString());
     
             if(Integer.parseInt(id) < studentDb.size() - 1 && Integer.parseInt(id) >= 0){
                 jsonArray.set(Integer.parseInt(id), null);
@@ -56,10 +49,7 @@ public class StudentDeleteController {
                     finalJsonObj.put(Integer.toString(i), jsonArray.get(i));
             }
             String finalJsonStr = finalJsonObj.toJSONString().replace("},", "},\r");
-            System.out.println("second");
-            System.out.println(finalJsonStr);
             Files.write(Paths.get(file), finalJsonStr.getBytes());
-           
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

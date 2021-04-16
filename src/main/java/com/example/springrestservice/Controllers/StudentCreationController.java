@@ -29,23 +29,19 @@ public class StudentCreationController {
                               @RequestParam(value = "lname", defaultValue = "None") String lname,
                               @RequestParam(value = "grade", defaultValue = "None") String grade,
                               @RequestParam(value = "major", defaultValue = "None") String major) throws IOException, ParseException  { 
-        System.out.println("Request made");
-        System.out.println(fname+lname+grade);
 
         if(!fname.equals("None") && !lname.equals("None") && !grade.equals("None")){
+
             String file = "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
             FileReader reader = new FileReader(file);
             JSONParser jsonParser = new JSONParser();
-            JSONObject  studentDb = (JSONObject) jsonParser.parse(reader);
+            JSONObject studentDb = (JSONObject) jsonParser.parse(reader);
             reader.close();
             ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
 
-            Iterator it =  studentDb.keySet().iterator();
-                    while (it.hasNext()){
-                            String key = (String) it.next();
-                            jsonArray.add((JSONObject) studentDb.get(key));
-                    }
-
+            for(int i=0; i<studentDb.size(); i++){
+                jsonArray.add((JSONObject) studentDb.get(Integer.toString(i)));
+            }
             JSONObject newStudent = new JSONObject();
         
             newStudent.put("firstname", fname);
