@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
+
+import com.example.OtherFiles.FileHandler;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,30 +25,19 @@ public class StudentEditController {
                           @RequestParam(value = "attributeChange", defaultValue = "") String attributeChange,
                           @RequestParam(value = "attributeVal", defaultValue = "") String attributeVal) throws IOException, ParseException {
         
-                String file = "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
-                FileReader reader = new FileReader(file);
-                JSONParser jsonParser = new JSONParser();
-                JSONObject  studentDb = (JSONObject) jsonParser.parse(reader);
-                reader.close();
-                ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
-                for(int i=0; i<studentDb.size(); i++){
-                        jsonArray.add((JSONObject) studentDb.get(Integer.toString(i)));
-                }
+                /* Changes the attribute specified in the RequestParams to attributeVal and writes to the StudetnDb */
+                String file =  "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
+        
+                ArrayList<JSONObject> jsonArray = FileHandler.getJArrayFromFile(file);
                 
                 if(!id.equals("") && !attributeChange.equals("") && !attributeVal.equals("")){
-                        JSONObject chosenStudent = jsonArray.get(Integer.parseInt(id));
+                        JSONObject chosenStudent = jsonArray.get(Integer.parseInt(id)); // chosenStudent directly changes the student in jsonArray
                         chosenStudent.put(attributeChange, attributeVal);
-                        if (attributeChange.equals("grade") && Integer.parseInt(attributeVal) <15){
+                        if (attributeChange.equals("grade") && Integer.parseInt(attributeVal) <12){
                                 chosenStudent.put("major", null);
                         }
 
-                        JSONObject finalJsonObj = new JSONObject();
-
-                        for(int i=0; i<jsonArray.size(); i++){
-                                finalJsonObj.put(Integer.toString(i), jsonArray.get(i));
-                        }
-                        String finalJsonStr = finalJsonObj.toJSONString().replace("},", "},\r");
-                        Files.write(Paths.get(file), finalJsonStr.getBytes());
+                        FileHandler.writeJArrayToFile(file, jsonArray);
                 }
 	}
    

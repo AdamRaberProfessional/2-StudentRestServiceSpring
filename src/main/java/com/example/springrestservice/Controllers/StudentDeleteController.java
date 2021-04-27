@@ -3,10 +3,10 @@ package com.example.springrestservice.Controllers;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
+
+import com.example.OtherFiles.FileHandler;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,33 +23,24 @@ public class StudentDeleteController {
     @CrossOrigin
 	@PostMapping("/deletestudent")
 	public ResponseEntity<Object> student(@RequestParam(value = "id", defaultValue = "") String id) throws IOException, org.json.simple.parser.ParseException {
+       
+        /* Deletes the student with the ID matching the id RequestParam. */
+        
         System.out.println("requested delete student "+ id);
         if(id != ""){
-            String file = "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
-            FileReader reader = new FileReader(file);
-            JSONParser jsonParser = new JSONParser();
-            JSONObject  studentDb = (JSONObject) jsonParser.parse(reader);
-            reader.close();
-            ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
-            for(int i=0; i<studentDb.size(); i++){
-                jsonArray.add((JSONObject) studentDb.get(Integer.toString(i)));
-            }
+            String file =  "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
+            ArrayList<JSONObject> jsonArray = FileHandler.getJArrayFromFile(file);
     
-            if(Integer.parseInt(id) < studentDb.size() - 1 && Integer.parseInt(id) >= 0){
+            if(Integer.parseInt(id) < jsonArray.size() - 1 && Integer.parseInt(id) >= 0){
                 jsonArray.set(Integer.parseInt(id), null);
-            }else if(Integer.parseInt(id) == studentDb.size() - 1){
+            }else if(Integer.parseInt(id) == jsonArray.size() - 1){
                 jsonArray.remove(Integer.parseInt(id));   
             }else{
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             
-            JSONObject finalJsonObj = new JSONObject();
-    
-            for(int i=0; i<jsonArray.size(); i++){
-                    finalJsonObj.put(Integer.toString(i), jsonArray.get(i));
-            }
-            String finalJsonStr = finalJsonObj.toJSONString().replace("},", "},\r");
-            Files.write(Paths.get(file), finalJsonStr.getBytes());
+            FileHandler.writeJArrayToFile(file, jsonArray);
+            
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

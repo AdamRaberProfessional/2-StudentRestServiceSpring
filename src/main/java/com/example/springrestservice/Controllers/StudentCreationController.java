@@ -1,16 +1,14 @@
 package com.example.springrestservice.Controllers;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
+
+import com.example.OtherFiles.FileHandler;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -30,18 +28,13 @@ public class StudentCreationController {
                               @RequestParam(value = "grade", defaultValue = "None") String grade,
                               @RequestParam(value = "major", defaultValue = "None") String major) throws IOException, ParseException  { 
 
+        /* Creates a student JSON object using the input params and appends it to the StudentDatabase JSON file. */
+
         if(!fname.equals("None") && !lname.equals("None") && !grade.equals("None")){
-
             String file = "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
-            FileReader reader = new FileReader(file);
-            JSONParser jsonParser = new JSONParser();
-            JSONObject studentDb = (JSONObject) jsonParser.parse(reader);
-            reader.close();
-            ArrayList<JSONObject> jsonArray = new ArrayList<JSONObject>();
 
-            for(int i=0; i<studentDb.size(); i++){
-                jsonArray.add((JSONObject) studentDb.get(Integer.toString(i)));
-            }
+            ArrayList<JSONObject> jsonArray = FileHandler.getJArrayFromFile(file);    
+
             JSONObject newStudent = new JSONObject();
         
             newStudent.put("firstname", fname);
@@ -59,17 +52,10 @@ public class StudentCreationController {
             }else{
                 newStudent.put("major", null);
             }
-
-
-            JSONObject finalJsonObj = new JSONObject();
+           
             jsonArray.add(newStudent);
-            for(int i=0; i<jsonArray.size(); i++){
-                finalJsonObj.put(Integer.toString(i), jsonArray.get(i));
-            }
 
-            String finalJsonStr = finalJsonObj.toJSONString().replace("},", "},\r");
-            Files.write(Paths.get(file), finalJsonStr.getBytes());
-            
+            FileHandler.writeJArrayToFile(file, jsonArray);          
         }
 
 
