@@ -53,7 +53,7 @@
 				<executions>
 			        <execution>
 			            <configuration>
-			                <mainClass>com.example.springrestservice.SpringrestserviceApplication</mainClass>
+        	<mainClass>com.example.springrestservice.SpringrestserviceApplication</mainClass>
 			            </configuration>
 			        </execution>
 			    </executions>
