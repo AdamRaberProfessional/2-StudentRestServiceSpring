@@ -50,8 +50,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+			        <execution>
+			            <configuration>
+			                <mainClass>com.example.springrestservice.SpringrestserviceApplication</mainClass>
+			            </configuration>
+			        </execution>
+			    </executions>
 			</plugin>
 		</plugins>
+		
 	</build>
 
 </project>

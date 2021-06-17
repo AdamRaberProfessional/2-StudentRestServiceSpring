@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import com.example.OtherFiles.FileHandler;
+import com.example.util.FileHandler;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,7 +28,7 @@ public class StudentDeleteController {
         
         System.out.println("requested delete student "+ id);
         if(id != ""){
-            String file =  "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
+        	String file = "./src/main/java/com/example/springrestservice/StudentDatabase.json";
             ArrayList<JSONObject> jsonArray = FileHandler.getJArrayFromFile(file);
     
             if(Integer.parseInt(id) < jsonArray.size() - 1 && Integer.parseInt(id) >= 0){

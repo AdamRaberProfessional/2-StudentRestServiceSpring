@@ -1,5 +1,6 @@
 package com.example.springrestservice.Controllers;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.example.OtherFiles.FileHandler;
+import com.example.util.FileHandler;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -31,7 +32,9 @@ public class StudentCreationController {
         /* Creates a student JSON object using the input params and appends it to the StudentDatabase JSON file. */
 
         if(!fname.equals("None") && !lname.equals("None") && !grade.equals("None")){
-            String file = "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
+        	System.out.println("FILEPATH");
+        	System.out.println(new File(".").getAbsolutePath());
+            String file = "./src/main/java/com/example/springrestservice/StudentDatabase.json";
 
             ArrayList<JSONObject> jsonArray = FileHandler.getJArrayFromFile(file);    
 

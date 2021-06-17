@@ -20,10 +20,8 @@ public class StudentReturnController {
 	@GetMapping("/getstudent")
 	public String student(@RequestParam(value = "id", defaultValue = "None") String id) throws IOException, ParseException {
         /* Returns a Student json object with the id matching the RequestParam, or returns all students. */
-
-        System.out.println("Now");
-        System.out.println(new File(".").getAbsolutePath());
-        FileReader reader = new FileReader("./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json");
+    	String file = "./src/main/java/com/example/springrestservice/StudentDatabase.json";
+        FileReader reader = new FileReader(file);
         JSONParser jsonParser = new JSONParser();
         JSONObject studentDb = (JSONObject) jsonParser.parse(reader);
         reader.close();

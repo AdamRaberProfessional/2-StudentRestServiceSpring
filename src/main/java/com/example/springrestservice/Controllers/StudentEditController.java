@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import com.example.OtherFiles.FileHandler;
+import com.example.util.FileHandler;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,7 +26,7 @@ public class StudentEditController {
                           @RequestParam(value = "attributeVal", defaultValue = "") String attributeVal) throws IOException, ParseException {
         
                 /* Changes the attribute specified in the RequestParams to attributeVal and writes to the StudetnDb */
-                String file =  "./springrestservice/src/main/java/com/example/springrestservice/StudentDatabase.json";
+        		String file = "./src/main/java/com/example/springrestservice/StudentDatabase.json";
         
                 ArrayList<JSONObject> jsonArray = FileHandler.getJArrayFromFile(file);
                 
