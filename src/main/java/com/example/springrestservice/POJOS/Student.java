@@ -3,7 +3,7 @@ package com.example.springrestservice.POJOS;
 import java.sql.Time;
 import java.util.Calendar;
 
-public class Student {
+public class Student { 
     private Integer id;
     private String firstname;
     private String lastname;

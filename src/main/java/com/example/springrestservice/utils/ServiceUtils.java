@@ -7,5 +7,5 @@ import java.sql.SQLException;
 public class ServiceUtils {
     public static Connection getConnection() throws SQLException{
         return DriverManager.getConnection("jdbc:sqlite:./src/main/resources/studentDb.sqlite");
-    }
+    } 
 }

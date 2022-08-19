@@ -36,7 +36,7 @@ public class StudentReturnController {
         if(id.equals("all")){
             stmtGetStudents = conn.prepareStatement("SELECT * FROM students");
             results = stmtGetStudents.executeQuery();
-        }else{
+        }else{ 
             stmtGetStudents = conn.prepareStatement("SELECT * FROM students WHERE id = ?");
             stmtGetStudents.setString(1, id);
             results = stmtGetStudents.executeQuery();

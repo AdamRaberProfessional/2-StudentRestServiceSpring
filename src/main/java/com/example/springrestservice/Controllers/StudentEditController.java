@@ -37,7 +37,7 @@ public class StudentEditController {
             if(attributeChange == "grade")
             {
                 // Make sure it's a number  bad request response if not
-            }
+            } 
             else if(attributeChange == "major")
             {
                 // Make sure it's <= 4 characters - bad request response if not
@@ -46,7 +46,7 @@ public class StudentEditController {
             PreparedStatement stmt = conn.prepareStatement("UPDATE STUDENTS SET " + attributeChange + " = ? WHERE id = ?");
             stmt.setString(1, attributeVal);
             stmt.setString(2, id);
-            stmt.executeUpdate();
+            stmt.executeUpdate(); 
             stmt.close();
             conn.close();
 	}

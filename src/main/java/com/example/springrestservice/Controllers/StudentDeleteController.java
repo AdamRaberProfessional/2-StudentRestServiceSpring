@@ -26,7 +26,7 @@ public class StudentDeleteController {
         /* Deletes the student with the ID matching the id RequestParam. */
         
         System.out.println("requested delete student "+ id);
-        if(!id.equals("")){
+        if(!id.equals("")){ 
             Connection conn = ServiceUtils.getConnection();
             PreparedStatement stmtDelete = conn.prepareStatement("DELETE FROM students WHERE id = ?");
             stmtDelete.setString(1, id);
