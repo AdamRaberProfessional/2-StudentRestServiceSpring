@@ -1,15 +1,14 @@
 package com.example.springrestservice.Controllers;
-
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.example.springrestservice.utils.ServiceUtils;
 import com.example.util.FileHandler;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,25 +21,18 @@ public class StudentDeleteController {
 
     @CrossOrigin
 	@PostMapping("/deletestudent")
-	public ResponseEntity<Object> student(@RequestParam(value = "id", defaultValue = "") String id) throws IOException, org.json.simple.parser.ParseException {
+	public ResponseEntity<Object> student(@RequestParam(value = "id", defaultValue = "") String id) throws IOException, org.json.simple.parser.ParseException, SQLException {
        
         /* Deletes the student with the ID matching the id RequestParam. */
         
         System.out.println("requested delete student "+ id);
-        if(id != ""){
-        	String file = "./src/main/java/com/example/springrestservice/StudentDatabase.json";
-            ArrayList<JSONObject> jsonArray = FileHandler.getJArrayFromFile(file);
-    
-            if(Integer.parseInt(id) < jsonArray.size() - 1 && Integer.parseInt(id) >= 0){
-                jsonArray.set(Integer.parseInt(id), null);
-            }else if(Integer.parseInt(id) == jsonArray.size() - 1){
-                jsonArray.remove(Integer.parseInt(id));   
-            }else{
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            
-            FileHandler.writeJArrayToFile(file, jsonArray);
-            
+        if(!id.equals("")){
+            Connection conn = ServiceUtils.getConnection();
+            PreparedStatement stmtDelete = conn.prepareStatement("DELETE FROM students WHERE id = ?");
+            stmtDelete.setString(1, id);
+            stmtDelete.executeUpdate();
+            stmtDelete.close();
+            conn.close();
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
